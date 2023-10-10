@@ -6,23 +6,23 @@
 
 program *create_program()
 {
-    program *prog = new program;
+    program *prog = new program; //create new program with no name
     printf("program %p\n", prog);
-    return prog;
+    return prog; // return pointer
 }
 
 void append_expression(
-    program *prog,
-    int expr_id,
-    const char *op_name,
-    const char *op_type,
-    int inputs[],
-    int num_inputs)
+    program *prog, //pointer to prog
+    int expr_id, //id
+    const char *op_name, //string operation name
+    const char *op_type, //string operation type
+    int inputs[], //array of int values
+    int num_inputs) //size of array of int values
 {
     printf("program %p, expr_id %d, op_name %s, op_type %s, inputs %d (",
         prog, expr_id, op_name, op_type, num_inputs);
-    for (int i = 0; i != num_inputs; ++i)
-        printf("%d,", inputs[i]);
+    for (int i = 0; i != num_inputs; i++)
+        printf("i=%d-%d,", i,inputs[i]);
     printf(")\n");
     prog->append_expression(expr_id, op_name, op_type, inputs, num_inputs);
 }

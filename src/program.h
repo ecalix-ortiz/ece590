@@ -30,6 +30,8 @@ public:
         double data[]);
 
     evaluation *build();
+private:
+    std::vector<expression> expr_;
 }; // class program
 
 #endif // PROGRAM_H

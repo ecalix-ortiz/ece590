@@ -9,8 +9,11 @@ class evaluation;
 
 class expression
 {
-    friend class evaluation;
+    //evaluation class can access private instance 
+    //variables of this (expression) class
+    friend class evaluation; 
 public:
+    //methods
     expression(
         int expr_id,
         const char *op_name,
@@ -27,6 +30,15 @@ public:
         int dim,
         size_t shape[],
         double data[]);
+    // public instance variables
+
+private:
+    // instance variables
+    int expr_id_;
+    std::string op_name_;
+    std::string op_type_;
+    std::vector<int> inputs_;
+    std::map<std::string, std::vector<double>> op_param_;
 }; // class expression
 
 #endif // EXPRESSION_H
