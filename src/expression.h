@@ -34,11 +34,11 @@ public:
 
 private:
     // instance variables
-    int expr_id_;
+    const int expr_id_;
     std::string op_name_;
     std::string op_type_;
     std::vector<int> inputs_;
-    std::map<std::string, std::vector<double>> op_param_;
+    std::map<std::string, double> op_param_;
 }; // class expression
 
 #endif // EXPRESSION_H

@@ -27,14 +27,9 @@ public:
 private:
     double result_;
 
-    // ----My Code---
-    // std::map<std::string, double> kwargs_;
-
-    // std::vector<size_t> shape_;
-    // std::vector<double> data_;
-
     std::vector<expression> exprs_;
-    std::map<std::string, std::vector<double>> kwargs_;
+    std::map<std::string, double> kwargs_;
+    std::map<int, double> values_;
     
 }; // class evaluation
 

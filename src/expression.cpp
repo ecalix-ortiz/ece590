@@ -16,11 +16,12 @@ expression::expression(
 {
 }
 
+// result of evaluation stored here
 void expression::add_op_param_double(
     const char *key,
     double value)
 {
-    op_param_[key].push_back(value);
+    op_param_[key] = value;
 }
 
 void expression::add_op_param_ndarray(
@@ -29,7 +30,4 @@ void expression::add_op_param_ndarray(
     size_t shape[],
     double data[])
 {
-    size_t n=1;
-    for(int i=0; i<dim; ++i) n*=shape[i];
-    op_param_[key].assign(data,data+n);
 }
