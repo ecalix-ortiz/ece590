@@ -7,32 +7,20 @@
 
 int main()
 {
-    program *prog = create_program(); // create blank program and assing pointer of it to prog
+    program *prog = create_program();
 
-    int inputs0[] = {}; // new array of int values
-    // adds an expression object to the program prog
-    append_expression(
-        prog, //program
-        0, //expression id
-        "a" /*name of expression*/, 
-        "Input", //operation type
-        inputs0, //array
-        0); //number of inputs
+    int inputs0[] = {};
+    append_expression(prog, 0, "a", "Input", inputs0, 0);
 
-    int inputs1[] = {0, 0}; // array of values
+    int inputs1[] = {0, 0};
     append_expression(prog, 1, "", "Add", inputs1, 2);
 
-    // creating new evaluation pointer from expression in program
     evaluation *eval = build(prog);
-
-    add_kwargs_double(eval, //eval object
-        "a", //key of expression
-        5); //value
+    add_kwargs_double(eval, "a", 5);
 
     int dim = 0;
     size_t *shape = nullptr;
     double *data = nullptr;
-    // should return a pointer to data 
     if (execute(eval, &dim, &shape, &data) != 0)
     {
         printf("evaluation fails\n");

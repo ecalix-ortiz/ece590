@@ -2,6 +2,9 @@
 #define EVALUATION_H
 
 #include "expression.h"
+#include "tensor.h"
+#include "eval_op.h"
+#include <memory> // needed for shared_ptr
 
 class evaluation
 {
@@ -22,14 +25,15 @@ public:
     int execute();
 
     // return the variable computed by the last expression
-    double &get_result();
+    tensor &get_result();
 
 private:
-    double result_;
+    tensor result_;
 
-    std::vector<expression> exprs_;
-    std::map<std::string, double> kwargs_;
-    std::map<int, double> values_;
+    // std::vector<expression> exprs_;
+    std::map<std::string, tensor> kwargs_;
+    std::map<int, tensor> variables_;
+    std::vector<std::shared_ptr<eval_op>> ops_; // instead of exprs_
     
 }; // class evaluation
 

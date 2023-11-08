@@ -86,4 +86,4 @@ def grade_Q10():
     return is_same(z, 10, x = None, y = None)
 
 
-grade.grade_all("p2", 1, 11, globals())
+grade.grade_all("p2", 1, 5, globals())

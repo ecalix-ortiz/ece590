@@ -1,4 +1,5 @@
 #include "expression.h"
+#include "tensor.h"
 
 //Constructor
 expression::expression(
@@ -21,7 +22,7 @@ void expression::add_op_param_double(
     const char *key,
     double value)
 {
-    op_param_[key] = value;
+    op_param_[key] = tensor(value);
 }
 
 void expression::add_op_param_ndarray(
@@ -30,4 +31,26 @@ void expression::add_op_param_ndarray(
     size_t shape[],
     double data[])
 {
+    op_param_[key] = tensor(dim, shape, data);
+}
+
+// Getters
+int expression::get_id() const{
+    return expr_id_;
+}
+
+std::string expression::get_op_name() const{
+    return op_name_;
+}
+
+std::string expression::get_op_type() const{
+    return op_type_;
+}
+
+std::vector<int> expression::get_inputs() const{
+    return inputs_;
+}
+
+tensor expression::get_op_param(std::string key) const{
+    return op_param_.at(key);
 }

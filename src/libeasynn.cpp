@@ -6,23 +6,23 @@
 
 program *create_program()
 {
-    program *prog = new program; //create new program with no name
-    printf("program %p\n", prog);
-    return prog; // return pointer
+    program *prog = new program;
+    printf("libeasynn.cpp\tcreate_program()\n");
+    return prog;
 }
 
 void append_expression(
-    program *prog, //pointer to prog
-    int expr_id, //id
-    const char *op_name, //string operation name
-    const char *op_type, //string operation type
-    int inputs[], //array of int values
-    int num_inputs) //size of array of int values
+    program *prog,
+    int expr_id,
+    const char *op_name,
+    const char *op_type,
+    int inputs[],
+    int num_inputs)
 {
-    printf("program %p, expr_id %d, op_name %s, op_type %s, inputs %d (",
-        prog, expr_id, op_name, op_type, num_inputs);
-    for (int i = 0; i != num_inputs; i++)
-        printf("i=%d-%d,", i,inputs[i]);
+    printf("libeasynn.cpp\tappend_expression()\texpr_id %d, op_name %s, op_type %s, inputs %d (",
+        expr_id, op_name, op_type, num_inputs);
+    for (int i = 0; i != num_inputs; ++i)
+        printf("%d,", inputs[i]);
     printf(")\n");
     prog->append_expression(expr_id, op_name, op_type, inputs, num_inputs);
 }
@@ -32,8 +32,8 @@ int add_op_param_double(
     const char *key,
     double value)
 {
-    printf("program %p, key %s, value %f\n",
-        prog, key, value);
+    printf("libeasynn.cpp\tadd_op_param_double()\tkey %s, value %f\n",
+        key, value);
     return prog->add_op_param_double(key, value);
 }
 
@@ -44,8 +44,8 @@ int add_op_param_ndarray(
     size_t shape[],
     double data[])
 {
-    printf("program %p, key %s, value %p dim %d (",
-        prog, key, data, dim);
+    printf("libeasynn.cpp\tadd_op_param_ndarray\tkey %s, value %p dim %d (",
+        key, data, dim);
     for (int i = 0; i != dim; ++i)
         printf("%zu,", shape[i]);
     printf(")\n");
@@ -55,7 +55,7 @@ int add_op_param_ndarray(
 evaluation *build(program *prog)
 {
     evaluation *eval = prog->build();
-    printf("evaluation %p\n", eval);
+    printf("libeasynn.cpp\tbuild(program)\n");
     return eval;
 }
 
@@ -64,8 +64,8 @@ void add_kwargs_double(
     const char *key,
     double value)
 {
-    printf("evaluation %p, key %s, value %f\n",
-        eval, key, value);
+    printf("libeasynn.cpp\tadd_kwargs_double()\tkey %s, value %f\n",
+        key, value);
     eval->add_kwargs_double(key, value);
 }
 
@@ -76,8 +76,8 @@ void add_kwargs_ndarray(
     size_t shape[],
     double data[])
 {
-    printf("evaluation %p, key %s, value %p dim %d (",
-        eval, key, data, dim);
+    printf("libeasynn.cpp\tadd_kwargs_ndarray()\tkey %s, value %p dim %d (",
+        key, data, dim);
     for (int i = 0; i != dim; ++i)
         printf("%zu,", shape[i]);
     printf(")\n");
@@ -90,14 +90,16 @@ int execute(
     size_t **p_shape,
     double **p_data)
 {
-    printf("evaluation %p, p_dim %p, p_shape %p, p_data %p\n",
-        eval, p_dim, p_shape, p_data);
+    printf("libeasynn.cpp\texecute()\tp_dim %p, p_shape %p, p_data %p\n",
+        p_dim, p_shape, p_data);
     int ret = eval->execute();
     if (ret != 0)
         return ret;
-    *p_dim = 0;
-    *p_shape = nullptr;
-    *p_data = &eval->get_result();
+    // logging and error checking
+    tensor &res = eval->get_result();
+    *p_dim = res.get_dim();
+    *p_shape = res.get_shape_array();
+    *p_data = res.get_data_array();
     fflush(stdout);
     return 0;
 }

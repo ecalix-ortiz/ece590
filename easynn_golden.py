@@ -160,76 +160,22 @@ def Conv2d(expr, op, args, **kwargs):
 
 class Eval:
     def __init__(self, program):
-        # Constructor for the Eval class.
-        # Initializes an instance of Eval with a program.
         self.program = program
     
     def __call__(self, **kwargs):
-        # The __call__ method allows instances of Eval to be called like functions.
-        
-        # Record the starting time to measure the execution time.
         start = time.time()
-        
-        # Create an empty dictionary to store intermediate values.
         values = {}
-        
-        # Iterate over expressions in the program.
         for expr in self.program:
-            # Print the inputs of the current expression.
-            print(expr.inputs)
-            
-            # Extract the IDs of the input expressions.
-            # Print a list of IDs for debugging purposes.
-            print([ex.id] for ex in expr.inputs)
-            
-            # Retrieve the values of the input expressions from the 'values' dictionary.
             args = [values[ex.id] for ex in expr.inputs]
-            
-            # Print the retrieved arguments.
-            print(args)
-            
-            # Check if the operation type is defined globally.
             if expr.op.op_type not in globals():
                 raise Exception("%s: not implemented" % expr)
-            
-            # Print information about the current expression and operation.
-            print(expr.id)
-            print(expr.op)  # easynn.Op type
-            print(type(expr.op))
-            print(expr.op.op_type)  # str type
-            print(type(expr.op.op_type))
-            
-            # Update the 'values' dictionary with the result of the operation.
             values[expr.id] = globals()[expr.op.op_type](expr, expr.op, args, **kwargs)
-            
-            # Print the updated 'values' dictionary.
-            print(values)
-            
-            # Print "numpy op" along with the operation type and elapsed time.
-            # This seems to be a comment for debugging or profiling.
-            # print("numpy op", expr.op.op_type, "time %.2f" % (time.time() - start))
-        
-        # Get the final result from the 'values' dictionary.
+            #print("numpy op", expr.op.op_type, "time %.2f" % (time.time()-start))
         res = values[self.program[-1].id]
-        
-        # Print the intermediate values (for debugging purposes).
-        print("----golden values: ----")
-        print(values)
-        
-        # Print the final result.
-        print("----golden res/result: ----")
-        print(res)
-        
-        # Calculate the elapsed time for the evaluation.
-        t = time.time() - start
-        
-        # If the execution time is greater than 0.1 seconds, print a message.
+        t = time.time()-start
         if t > 0.1:
             print("numpy time %.2f" % t)
-        
-        # Return the final result.
         return res
-
 
 
 class Builder:
