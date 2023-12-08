@@ -275,7 +275,7 @@ void eval_maxpool2d::eval(vars_type &variables, const kwargs_type &kwargs){
     variables[expr_id_] = tensor(4, output_shape, &output_data[0]);
 }
 
-/********************** eval_maxpool2d *****************************/
+/********************** eval_conv2d *****************************/
 eval_conv2d::eval_conv2d(const expression &expr):
     eval_op(expr),
     weight_(expr.get_op_param("weight")),

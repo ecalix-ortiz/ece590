@@ -85,20 +85,27 @@ def backprop(labels, theta, z, h, g, x):
         #   compute partial J to partial h[i]
         #   accumulate partial J to partial f2_W, f2_b
         # ToDo: uncomment code below to add your own code
-        # p_h = ...
-        # p_f2_W += ...
-        # p_f2_b += ...
+        # First perform matrix multiplication
+        p_h = np.matmul(f2_W.T, p_z)
+        # then element-wise multiplication between p_z and h[i]
+        for j in range(p_f2_W.shape[0]):
+            p_f2_W[j, :] += p_z[j]*h[i]
+        # then add the emelment-wise product to p_f2_W
+        p_f2_b += p_z
 
         # h = ReLU(g)
         #   compute partial J to partial g[i]
         # ToDo: uncomment code below to add your own code
-        # p_g = ...
+        p_g = np.multiply(np.heaviside(g[i], 0), p_h)
 
         # g = Linear_f1(x)
         #   accumulate partial J to partial f1_W, f1_b
         # ToDo: uncomment code below to add your own code
-        # p_f1_W += ...
-        # p_f1_b += ...
+        # first, reshape g[i] and x[i] to ensure compatibility for element-wise multiplication
+        for j in range(p_f1_W.shape[0]):
+            p_f1_W[j, :] += p_g[j]*x[i]
+        # then add the element-wise product to p_f1_W
+        p_f1_b += p_g
 
     return (p_f1_W, p_f1_b, p_f2_W, p_f2_b)
 
@@ -107,12 +114,12 @@ def backprop(labels, theta, z, h, g, x):
 # return updated theta
 def update_theta(theta, nabla_J, epsilon):
     # ToDo: modify code below as needed
-    updated_theta = theta
+    updated_theta = theta - np.array(nabla_J * epsilon, dtype=object)
     return updated_theta
 
 
 # ToDo: set numpy random seed to the last 8 digits of your CWID
-np.random.seed(12345678)
+np.random.seed(20436491)
 
 # load training data and split them for validation/training
 mnist_train = np.load("mnist_train.npz")
@@ -122,7 +129,23 @@ training_images = mnist_train["images"][1000:]
 training_labels = mnist_train["labels"][1000:]
 
 # hyperparameters
-bound = 1 # initial weight range
+# Test 1: passes nothing
+# bound = 1 # initial weight range
+# epsilon = 0.0001 # learning rate
+# batch_size = 2
+
+# Test 2: passes 1-3 but not 4
+# bound = 0.0003 # initial weight range
+# epsilon = 0.0001 # learning rate
+# batch_size = 1
+
+# Test 3: passes 4 - best accuracy
+# bound = 0.001 # initial weight range
+# epsilon = 0.00005 # learning rate
+# batch_size = 2
+
+# Test 4
+bound = 0.001 # initial weight range
 epsilon = 0.00001 # learning rate
 batch_size = 4
 
